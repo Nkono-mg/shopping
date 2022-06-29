@@ -17,7 +17,8 @@ module.exports.registerUser = catchAsyncError(async (req, res, next) => {
         success: true,
         token
     }) */
-    //Replace by sendToken function
+
+    //Replaced by sendToken function
     return await sendToken(user, 200, res)
 })
 
@@ -42,6 +43,7 @@ module.exports.loginUser = catchAsyncError(async (req, res, next) => {
         success: true,
         token
     }) */
-     //Replace by sendToken function
+
+     //Replaced by sendToken function
     return await sendToken(user, 200, res)
 })
