@@ -7,7 +7,7 @@ const errorMiddleware = require("./middlewares/errors");
 app.use(express.json());
 app.use(bodyPrser.json());
 app.use(bodyPrser.urlencoded({ extended: true })); 
-//app.use(cookieParser);
+app.use(cookieParser());
 
 //import all routes
 const products = require("./routes/products/productRoute");

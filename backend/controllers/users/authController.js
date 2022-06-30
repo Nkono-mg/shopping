@@ -47,3 +47,15 @@ module.exports.loginUser = catchAsyncError(async (req, res, next) => {
      //Replaced by sendToken function
     return await sendToken(user, 200, res)
 })
+
+//logout user
+module.exports.logoutUser = catchAsyncError(async (req, res, next) => {
+    await res.cookie('token', null, { 
+        expires: new Date(Date.now()), 
+        httpOnly: true
+    })
+    return res.status(200).json({  
+        success: true,
+        message: "Logged out"
+    }) 
+})
