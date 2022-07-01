@@ -2,6 +2,9 @@ const userModel = require("../../models/users/user");
 const ErrorHandler = require("../../utils/errorHandler");
 const catchAsyncError = require("../../middlewares/catchAsyncError");
 const sendToken = require("../../utils/jwtToken");
+const sendEmail = require("../../utils/sendEmail");
+const crypto = require("crypto");
+
 
 //Register a user 
 module.exports.registerUser = catchAsyncError(async (req, res, next) => {
@@ -48,6 +51,60 @@ module.exports.loginUser = catchAsyncError(async (req, res, next) => {
     return await sendToken(user, 200, res)
 })
 
+//Forgot password send email
+module.exports.forgotPasswordUser = catchAsyncError(async (req, res, next) => {
+    const user = await userModel.findOne({email: req.body.email});
+    if(!user){
+        return next(new ErrorHandler("Email address not found", 404))
+    }
+    //Get reset token
+    const resetToken = user.getResetPasswordToken();
+    await user.save({validateBeforSave: false})
+    //create reset password url
+    const resetUrl = `${req.protocol}://${req.get('host')}/api/shopping/reset/password/${resetToken}`
+    const message = `Your password reset link is \n\n${resetUrl}`;
+    try {
+        await sendEmail({
+            email: user.email,
+            subject: "Shopping Password Recovery",
+            message
+        })
+        return res.status(200).json({
+            success: true,
+            message: `Email sent to ${user.email}`
+        })
+        
+    } catch (error) {
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+        await user.save({validateBeforeSave: false})
+        return next(new ErrorHandler(error.message, 500))
+        
+    }
+})
+
+//Reset password for a new
+module.exports.resetPasswordUser = catchAsyncError(async (req, res, next) => {
+    //Hash URL token 
+    const resetPasswordToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
+    const user = await userModel.findOne({
+        resetPasswordToken,
+        resetPasswordExpire: {$gt: Date.now()}
+    })
+    if(!user){
+        return next(new ErrorHandler("Reset password Invalid Or expired", 400))
+    }
+    if(req.body.password !== req.body.confirmPassword){
+        return next(new ErrorHandler(`Password doesn't match`, 400));
+    }
+    //Setup a new  password
+    user.password = req.body.password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+    sendToken(user,200,res);
+})
+
 //logout user
 module.exports.logoutUser = catchAsyncError(async (req, res, next) => {
     await res.cookie('token', null, { 
@@ -59,3 +116,26 @@ module.exports.logoutUser = catchAsyncError(async (req, res, next) => {
         message: "Logged out"
     }) 
 })
+
+//Get currently logged in user details
+module.exports.getUserProfile = catchAsyncError(async (req, res, next) => {
+    const user = await userModel.findById(req.user.id);
+    return res.status(200).json({
+        success: true,
+        user
+    })
+})
+
+//Update change password
+module.exports.updateUserPassword = catchAsyncError(async (req, res, next) => {
+    const user = await userModel.findById(req.user.id).select("+password");
+    //check previous user password
+    const isMatched = await user.comparePassword(req.body.oldPassword);
+    if(!isMatched){
+        return next(new ErrorHandler("Old password is incorrect", 400))
+    }
+    user.password = req.body.password;
+    await user.save()
+    sendToken(user, 200, res);
+})
+ 
