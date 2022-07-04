@@ -36,7 +36,7 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
   
 });
  
-//get a one product
+//get one product
 exports.getOneProduct = catchAsyncError(async (req, res, next) => {
   const product = await productModel.findById(req.params.id); 
   if (!product) {

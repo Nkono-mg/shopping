@@ -215,7 +215,7 @@ module.exports.deleteUser = catchAsyncError(async (req, res, next)=>{
     return next(new ErrorHandler(`User not found: ${req.params.id}`, 404))
   }
   //Remove avatar =>todo
-
+ 
   await user.remove()
   return res.status(200).json({
     success: true,
