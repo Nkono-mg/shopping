@@ -27,7 +27,7 @@ const orderSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true
-    },
+    }/*,
     orderItems: [
         {
             name: {
@@ -65,19 +65,23 @@ const orderSchema = mongoose.Schema({
         type: Date
     },
     itemsPrice: {
-        tyep: Number,
+        type: Number,
+        required: true,
         default: 0.0
     },
     taxPrice: {
-        tyep: Number,
+        type: Number,
+        required: true,
         default: 0.0
     },
     shippingPrice: {
-        tyep: Number,
+        type: Number,
+        required: true,
         default: 0.0
     },
     totalPrice: { 
-        tyep: Number,
+        type: Number,
+        required: true,
         default: 0.0
     },
     orderStatus: {
@@ -90,8 +94,7 @@ const orderSchema = mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
-
+    }*/
 })
 
 module.exports = mongoose.model("orders", orderSchema)

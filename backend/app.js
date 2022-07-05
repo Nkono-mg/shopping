@@ -13,7 +13,7 @@ app.use(cookieParser());
 const products = require("./routes/products/productRoute");
 const orders = require("./routes/products/orderRoute");
 const userAuth = require("./routes/users/auth");
-app.use("/api/shopping/", products);
+app.use("/api/shopping", products);
 app.use("/api/shopping", orders);
 app.use("/api/shopping", userAuth);
 
