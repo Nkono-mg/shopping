@@ -2,15 +2,15 @@ const ErrorHandler = require("../utils/errorHandler");
 
 module.exports = (err, req, res, next) => { 
   err.statusCode = err.statusCode || 500;
-  if (process.env.NODE_ENV === "DEVELOPMENT") {
+  if (process.env.NODE_ENV.match(/DEVELOPMENT/i)) {
      return res.status(err.statusCode).json({ 
       success: false,
       error: err, 
       errorMessage: err.message,
       stack: err.stack,
     });
-  } else if (process.env.NODE_ENV === "PRODUCTION") {
-    let error = { ...err };
+  }else if (process.env.NODE_ENV.match(/PRODUCTION/i)){
+    let error = { ...err }; 
     error.message = err.message; 
     //wrong Mongoose Object ID Error 
     if(err.name === "CastError"){
@@ -39,8 +39,9 @@ module.exports = (err, req, res, next) => {
 }
     return res.status(error.statusCode).json({ 
       success: false, 
+      error: err, 
       message: error.message || `Internal Server Error`,
     });
-  } 
+  }  
 };
    

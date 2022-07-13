@@ -1,4 +1,5 @@
 const userModel = require("../../models/users/user");
+const ObjectId = require("mongoose").Types.ObjectId;
 const ErrorHandler = require("../../utils/errorHandler");
 const catchAsyncError = require("../../middlewares/catchAsyncError");
 const sendToken = require("../../utils/jwtToken");
@@ -177,48 +178,49 @@ module.exports.getAllUser = catchAsyncError(async (req, res, next) => {
 
 //Get a single user details
 module.exports.getSingleUser = catchAsyncError(async (req, res, next) => {
-  const user = await userModel.findById(req.params.id);
-  if (!user) {
+  if (!ObjectId.isValid(req.params.id)) {
     return next(new ErrorHandler(`User not found: ${req.params.id}`, 404));
+  } else {
+    const user = await userModel.findById(req.params.id);
+    return res.status(200).json({
+      success: true,
+      user,
+    });
   }
-  return res.status(200).json({
-    success: true,
-    user,
-  });
 });
 
 //Update user
 module.exports.updateUserInfo = catchAsyncError(async (req, res, next) => {
-  const newUserData = {
-    name: req.body.name,
-    email: req.body.email,
-    role: req.body.role,
-  };
-  const user = await userModel.findByIdAndUpdate(req.params.id, newUserData, {
-    new: true,
-    runValidators: true,
-    useFindAndModify: false,
-  });
-  if(!user){
-    return next(new ErrorHandler(`User not found: ${req.params.id}`, 404))
+  if (!ObjectId.isValid(req.params.id)) {
+    return next(new ErrorHandler(`User not found: ${req.params.id}`, 404));
+  } else {
+    const newUserData = {
+      name: req.body.name,
+      email: req.body.email,
+      role: req.body.role,
+    };
+    await userModel.findByIdAndUpdate(req.params.id, newUserData, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
+    return res.status(200).json({
+      success: true,
+      message: `User is updated`,
+    });
   }
-  return res.status(200).json({
-    success: true,
-    message: `User is updated`
-  })
 });
 
 //Delete user
-module.exports.deleteUser = catchAsyncError(async (req, res, next)=>{
-  const user = userModel.findById(req.params.id);
-  if(!user){
-    return next(new ErrorHandler(`User not found: ${req.params.id}`, 404))
+module.exports.deleteUser = catchAsyncError(async (req, res, next) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    return next(new ErrorHandler(`User not found: ${req.params.id}`, 404));
+  } else {
+    await userModel.findByIdAndDelete(req.params.id);
+    //Remove avatar=>todo
+    return res.status(200).json({
+      success: true,
+      message: `User is deleted`,
+    });
   }
-  //Remove avatar =>todo
- 
-  await user.remove()
-  return res.status(200).json({
-    success: true,
-    message: `User is deleted`
-  })
-})
+});

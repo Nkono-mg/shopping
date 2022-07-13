@@ -1,4 +1,5 @@
 const orderModel = require("../../models/products/orderModel");
+const ObjectId = require("mongoose").Types.ObjectId;
 const productModel = require("../../models/products/productModel");
 const ErrorHandler = require("../../utils/errorHandler");
 const catchAsyncError = require("../../middlewares/catchAsyncError");
@@ -33,16 +34,17 @@ module.exports.addOrder = catchAsyncError(async (req, res, next) => {
 
 //Get single order =>/api/shopping/order/:id
 module.exports.getSingleOrder = catchAsyncError(async (req, res, next) => {
-  const order = orderModel
-    .findById(req.params.id)
-    .populate("user", "name email");
-  if (!order) {
+  if (!ObjectId.isValid(req.params.id)) {
     return next(new ErrorHandler(`Order not found: ${req.params.id}`, 404));
+  } else {
+    const order = orderModel
+      .findById(req.params.id)
+      .populate("user", "name email");
+    return res.status(200).json({
+      success: true,
+      order,
+    });
   }
-  return res.status(200).json({
-    success: true,
-    order,
-  });
 });
 
 //Get logged in user orders =>/api/shopping/orders/me
@@ -76,37 +78,44 @@ module.exports.getAllOrders = catchAsyncError(async (req, res, next) => {
 
 //Update Process Order => /api/shopping/admin/order/:id
 module.exports.updateProcessOrder = catchAsyncError(async (req, res, next) => {
-  const order = await orderModel.findById(req.params.id);
-  if (order.orderStatus === "Delivered") {
-    return next(new ErrorHandler("You have already delivered this order", 400));
+  if (!ObjectId.isValid(req.params.id)) {
+    return next(new ErrorHandler(`Order not found: ${req.params.id}`, 404));
+  } else {
+    const order = await orderModel.findById(req.params.id);
+    if (order.orderStatus === "Delivered") {
+      return next(
+        new ErrorHandler("You have already delivered this order", 400)
+      );
+    }
+    order.orderItems.forEach(async (item) => {
+      await updateStock(item.product, item.quantity);
+    });
+    order.orderStatus = req.body.status;
+    order.deliveredAt = Date.now();
+    await order.save();
+    return res.status(200).json({
+      success: true,
+      message: `Order is updated`,
+    });
   }
-  order.orderItems.forEach(async (item) => {
-    await updateStock(item.product, item.quantity);
-  });
-  order.orderStatus = req.body.status;
-  order.deliveredAt = Date.now();
-  await order.save();
-  return res.status(200).json({
-    success: true,
-    message: `Order is updated`,
-  });
 });
 
 //update stock function
 async function updateStock(id, quantity) {
   const product = await productModel.findById(id);
   product.stock = product.stock - product.quantity;
-  await product.save({ validateBeforeSave: false }); 
+  await product.save({ validateBeforeSave: false });
 }
 
 //Delete order =>/api/shopping/order/delete/:id
 module.exports.deleteOrder = catchAsyncError(async (req, res, next) => {
-  const order = await orderModel.findByIdAndDelete(req.params.id);
-  if (!order) {
+  if (!ObjectId.isValid(req.params.id)) {
     return next(new ErrorHandler(`Order not found: ${req.params.id}`, 404));
+  } else {
+    await orderModel.findByIdAndDelete(req.params.id);
+    return res.status(200).json({
+      success: true,
+      message: `Order is deleted`,
+    });
   }
-  return res.status(200).json({
-    success: true,
-    message: `Order is deleted`,
-  });
 });
