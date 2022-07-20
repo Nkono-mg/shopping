@@ -49,7 +49,7 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
   }
-  this.password = await bcrypt.hash(this.password, 10); //10 is a length of cryptage
+  this.password = await bcrypt.hash(this.password, 10); //10 is a length of cryptage for the salt value
 });
 
 //Uncrypt Password or compare password

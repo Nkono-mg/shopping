@@ -9,7 +9,7 @@ module.exports.isAuthenticatedUser = catchAsyncError(async (req, res, next)=>{
     if(!token){
         return next(new ErrorHandler("Login first to access this resource", 401));
     }
-    // decoded token and verify it
+    //decoded token and verify it
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     req.user = await userModel.findById(decodedToken.id);
     next();

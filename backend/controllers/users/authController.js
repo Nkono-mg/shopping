@@ -113,14 +113,14 @@ module.exports.resetPasswordUser = catchAsyncError(async (req, res, next) => {
 
 //logout user
 module.exports.logoutUser = catchAsyncError(async (req, res, next) => {
-  await res.cookie("token", null, {
+  await res.cookie("token",null, {
     expires: new Date(Date.now()),
     httpOnly: true,
   });
   return res.status(200).json({
     success: true,
     message: "Logged out",
-  });
+  }); 
 });
 
 //Get currently logged in user details
