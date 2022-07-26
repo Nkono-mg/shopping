@@ -6,7 +6,7 @@ const {isAuthenticatedUser, authorizeRoles} = require('../../middlewares/authChe
 
 router.route("/products").get(getProducts);
 router.route("/admin/products/new").post(isAuthenticatedUser, authorizeRoles("admin"), addProduct);
-router.route("/products/:id").get(getOneProduct);
+router.route("/product/:id").get(getOneProduct);
 router.route("/admin/products/:id").put(isAuthenticatedUser, authorizeRoles("admin"), updateProduct);
 router.route("/admin/products/:id").delete(isAuthenticatedUser, authorizeRoles("admin"), deleteProduct);  
 

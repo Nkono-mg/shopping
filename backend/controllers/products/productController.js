@@ -26,12 +26,14 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
   if (!products) {
     return next(new ErrorHandler("Product not found", 404));
   } else {
-    return res.status(200).json({
-      success: true,
-      totalProduct: products.length,
-      productCount,
-      products,
-    });
+    setTimeout(() => {
+      return res.status(200).json({
+        success: true,
+        totalProduct: products.length,
+        productCount,
+        products,
+      });
+    }, 1000);
   }
 });
 
@@ -41,10 +43,12 @@ module.exports.getOneProduct = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler("Product not found", 404));
   } else {
     const product = await productModel.findById(req.params.id);
-    return res.status(200).json({
-      success: true,
-      product,
-    });
+    setTimeout(() => {
+      return res.status(200).json({
+        success: true,
+        product,
+      });
+    }, 2000);
   }
 });
 
