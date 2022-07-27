@@ -10,12 +10,12 @@ import {
 } from "./type";
 
 // Get all prouducts
-export const getProducts = () => async (dispatch) => {
+export const getProducts = (currentPage=1) => async (dispatch) => {
   try {
     dispatch({
       type: ALL_PRODUCTS_REQUEST,
     });
-    const   { data }  = await axios.get("http://localhost:5000/api/shopping/products"); 
+    const   { data }  = await axios.get(`http://localhost:5000/api/shopping/products?page=${currentPage}`); 
     dispatch({ 
       type: ALL_PRODUCTS_SUCCESS,
       payload: data,
@@ -35,7 +35,6 @@ export const getProductDetails = (id) => async (dispatch) => {
       type: PRODUCT_DETAILS_REQUEST,
     });
     const   { data }  = await axios.get(`http://localhost:5000/api/shopping/product/${id}`); 
-    console.log(data)
     dispatch({ 
       type: PRODUCT_DETAILS_SUCCESS,
       payload: data.product

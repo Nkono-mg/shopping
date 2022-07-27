@@ -6,20 +6,23 @@ import {
   clearErrors,
 } from "../../redux/products/productAction";
 import Loader from "../layout/Loader";
+import { useParams } from "react-router-dom";
+import { Carousel } from "react-bootstrap";
 
-const ProductDetails = ({ match }) => {
+const ProductDetails = () => {
   const dispatch = useDispatch();
   const { loading, error, product } = useSelector(
     (state) => state.productDetails
   );
   const alert = useAlert();
+  const { id } = useParams();
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
-    dispatch(getProductDetails(match.params.id));
-  }, [dispatch, alert, error, match.params.id]);
+    dispatch(getProductDetails(id));
+  }, [dispatch, alert, error, id]);
   return (
     <Fragment>
       {loading ? (
@@ -27,38 +30,42 @@ const ProductDetails = ({ match }) => {
       ) : (
         <div className="row f-flex justify-content-around">
           <div className="col-12 col-lg-5 img-fluid" id="product_image">
-            <img
-              src="https://i5.walmartimages.com/asr/1223a935-2a61-480a-95a1-21904ff8986c_1.17fa3d7870e3d9b1248da7b1144787f5.jpeg?odnWidth=undefined&odnHeight=undefined&odnBg=ffffff"
-              alt="sdf"
-              height="500"
-              width="500"
-            />
+            <Carousel pause="hover">
+              {product.images &&
+                product.images.map((image) => {
+                  return (
+                    <Carousel.Item key={image.public_id}>
+                      <img
+                        className="d-block w-1000"
+                        src={image.url}
+                        alt={product.title}
+                      />
+                    </Carousel.Item>
+                  );
+                })}
+            </Carousel>
           </div>
-
           <div className="col-12 col-lg-5 mt-5">
             <h3>{product.name}</h3>
             <p id="product_id">Product #{product._id}</p>
-
             <hr />
-
             <div className="rating-outer">
-              <div className="rating-inner"></div>
+              <div
+                className="rating-inner"
+                style={{ width: `${(product.ratings / 5) * 100} %` }}
+              ></div>
             </div>
             <span id="no_of_reviews">({product.numOfReviews} Reviews)</span>
-
             <hr />
-
             <p id="product_price">${product.price}</p>
             <div className="stockCounter d-inline">
               <span className="btn btn-danger minus">-</span>
-
               <input
                 type="number"
                 className="form-control count d-inline"
                 value="1"
                 readOnly
               />
-
               <span className="btn btn-primary plus">+</span>
             </div>
             <button
@@ -70,14 +77,20 @@ const ProductDetails = ({ match }) => {
             </button>
             <hr />
             <p>
-              Status: <span id="stock_status">In Stock</span>
+              Status:{" "}
+              <span
+                id="stock_status"
+                className={product.stock > 0 ? `greenColor` : `redColor`}
+              >
+                {product.stock > 0 ? `In Stock` : `Out of Stock`}
+              </span>
             </p>
             <hr />
             <h4 className="mt-2">Description:</h4>
             <p>{product.description}</p>
             <hr />
             <p id="product_seller mb-3">
-              Sold by: <strong>Easy Shopping</strong>
+              Sold by: <strong>{product.seller}</strong>
             </p>
             <button
               id="review_btn"

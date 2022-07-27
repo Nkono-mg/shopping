@@ -16,7 +16,7 @@ exports.addProduct = catchAsyncError(async (req, res, next) => {
 
 //get all products
 exports.getProducts = catchAsyncError(async (req, res, next) => {
-  const resPerPage = 3;
+  const resPerPage = 8; 
   const productCount = await productModel.countDocuments();
   const apiFeature = new APIFeatures(productModel.find(), req.query)
     .search()
@@ -33,7 +33,7 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
         productCount,
         products,
       });
-    }, 1000);
+    }, 500);
   }
 });
 
@@ -48,7 +48,7 @@ module.exports.getOneProduct = catchAsyncError(async (req, res, next) => {
         success: true,
         product,
       });
-    }, 2000);
+    }, 500);
   }
 });
 

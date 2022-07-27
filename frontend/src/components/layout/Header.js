@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -6,10 +7,11 @@ const Header = () => {
       <nav className="navbar row">
         <div className="col-12 col-md-3">
           <div className="navbar-brand">
-            <img src="/images/shopLogo.jfif" alt="logo"/>
+            <Link to="/">
+              <img src="/images/shopLogo.jfif" alt="logo" />
+            </Link>
           </div>
         </div>
-
         <div className="col-12 col-md-6 mt-2 mt-md-0">
           <div className="input-group">
             <input
@@ -25,12 +27,10 @@ const Header = () => {
             </div>
           </div>
         </div>
-
         <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
           <button className="btn" id="login_btn">
             Login
           </button>
-
           <span id="cart" className="ml-3">
             Cart
           </span>
