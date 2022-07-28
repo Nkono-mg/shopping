@@ -19,14 +19,14 @@ export default function Home() {
   const { loading, products, productsCount, totalProductPerPage, error } =
     useSelector((state) => state.products);
   const { keyword } = useParams();
-  const [price, setPrice] = useState([1, 1000]);
+  const [price, setPrice] = useState([1, 1000000000]);
 
   useEffect(() => {
     if (error) {
       return alert.error(error);
     }
-    dispatch(getProducts(currentPage, keyword));
-  }, [dispatch, alert, error, currentPage, keyword]);
+    dispatch(getProducts(currentPage, keyword,price));
+  }, [dispatch, alert, error, currentPage, keyword,price]);
 
   const setCurrentPageNumber = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -45,24 +45,24 @@ export default function Home() {
                   <div className="col-6 col-md-3 mt-5 mb-5">
                     <div className="px-5">
                       <Range
-                      /* marks={{
+                       marks={{
                           1: `$1`,
-                          1000: `$1000`,
+                          1000000: `$1000000`,
                         }}
                         min={1}
-                        max={1000}
-                        defaultValue={[1, 1000]}
+                        max={1000000}
+                        defaultValue={[1, 1000000]}
                         tipFormatter={(value) => `$${value}`}
                         tipProps={{
                           placement: "top",
                           visible: true,
                         }}
                         value={price}
-                        onChange={(price) => setPrice(price)} */
+                        onChange={(price) => setPrice(price)} 
                       />
                     </div>
                   </div>
-                  <div className="col-6 col-md-9">
+                   <div className="col-6 col-md-9">
                     <div className="row">
                       {!isEmpty(products) &&
                         products.map((product) => {
@@ -75,7 +75,7 @@ export default function Home() {
                           );
                         })}
                     </div>
-                  </div>
+                  </div> 
                 </Fragment>
               ) : (
                 !isEmpty(products) &&

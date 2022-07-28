@@ -10,12 +10,13 @@ import {
 } from "./type";
 
 // Get all prouducts
-export const getProducts = (currentPage=1, keyword="") => async (dispatch) => {
+export const getProducts = (currentPage=1, keyword="", price) => async (dispatch) => {
   try {
+    
     dispatch({
       type: ALL_PRODUCTS_REQUEST,
     });
-    let link = `http://localhost:5000/api/shopping/products?keyword=${keyword}&page=${currentPage}`
+    let link = `http://localhost:5000/api/shopping/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}`
     const   { data }  = await axios.get(link); 
     dispatch({ 
       type: ALL_PRODUCTS_SUCCESS,
