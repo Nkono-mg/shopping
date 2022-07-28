@@ -26,29 +26,29 @@ const productSchema = new mongoose.Schema({
     {
       public_id: {
         type: String,
-       // required: true,
+        required: true,
       },
       url: {
         type: String,
-        //required: true,
+        required: true,
       },
     },
   ],
   category: {
-    type: String, 
-   // required: [true, "Please select category for this product"],
-    /* enum: {
+    type: String,
+    required: [true, "Please select category for this product"],
+    enum: {
       values: ["Electronics", "Cameras", "Laptop", "Food", "Books"],
       message: "Please select category for product",
-    }, */
+    },
   },
   seller: {
     type: String,
-    //required: [true, "Please enter product seller"],
+    required: [true, "Please enter product seller"],
   },
   stock: {
     type: Number,
-    //required: [true, "Please enter product stock"],
+    required: [true, "Please enter product stock"],
     default: 0,
   },
   numOfReviews: {
@@ -59,26 +59,26 @@ const productSchema = new mongoose.Schema({
     {
       name: {
         type: String,
-        //required: true,
+        required: true,
       },
       rating: {
         type: Number,
-        //required: true,
+        required: true,
       },
       comment: {
         type: String,
-        //required: true,
+        required: true,
       },
     },
   ],
   user: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
-    required: true
+    required: true,
   },
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 module.exports = mongoose.model("products", productSchema);

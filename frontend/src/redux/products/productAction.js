@@ -15,7 +15,8 @@ export const getProducts = (currentPage=1, keyword="") => async (dispatch) => {
     dispatch({
       type: ALL_PRODUCTS_REQUEST,
     });
-    const   { data }  = await axios.get(`http://localhost:5000/api/shopping/products?keyword=${keyword}&page=${currentPage}`); 
+    let link = `http://localhost:5000/api/shopping/products?keyword=${keyword}&page=${currentPage}`
+    const   { data }  = await axios.get(link); 
     dispatch({ 
       type: ALL_PRODUCTS_SUCCESS,
       payload: data,
