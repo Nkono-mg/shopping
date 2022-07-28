@@ -16,21 +16,43 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   const alert = useAlert();
-  const { loading, products, productsCount, totalProductPerPage, error } =
-    useSelector((state) => state.products);
+  const {
+    loading,
+    products,
+    productsCount,
+    resPerPage,
+    filteredProductsCount,
+    error,
+  } = useSelector((state) => state.products);
   const { keyword } = useParams();
   const [price, setPrice] = useState([1, 1000000000]);
+  const [category, setCategory] = useState("");
+  const categories = [
+    "Electronics",
+    "Cameras",
+    "Laptop",
+    "Food",
+    "Books",
+    "Drinks",
+  ];
+  const [ratings, setRatings] = useState(0);
 
   useEffect(() => {
     if (error) {
       return alert.error(error);
     }
-    dispatch(getProducts(currentPage, keyword,price));
-  }, [dispatch, alert, error, currentPage, keyword,price]);
+    dispatch(getProducts(currentPage, keyword, price, category, ratings));
+  }, [dispatch, alert, error, currentPage, keyword, price, category, ratings]);
 
   const setCurrentPageNumber = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  let count = productsCount;
+  if (keyword) {
+    count = filteredProductsCount;
+  }
+
   return (
     <Fragment>
       {loading ? (
@@ -45,7 +67,7 @@ export default function Home() {
                   <div className="col-6 col-md-3 mt-5 mb-5">
                     <div className="px-5">
                       <Range
-                       marks={{
+                        marks={{
                           1: `$1`,
                           1000000: `$1000000`,
                         }}
@@ -58,11 +80,54 @@ export default function Home() {
                           visible: true,
                         }}
                         value={price}
-                        onChange={(price) => setPrice(price)} 
+                        onChange={(price) => setPrice(price)}
                       />
+                      <hr className="my-5" />
+
+                      <div className="mt-5">
+                        <h4 className="mb-3">Categories</h4>
+                        <ul className="pl-0">
+                          {categories.map((category) => (
+                            <li
+                              style={{
+                                cursor: "pointer",
+                                listStyleType: "none",
+                              }}
+                              key={category}
+                              onClick={() => setCategory(category)}
+                            >
+                              {category}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="mt-5">
+                        <h4 className="mb-3">Ratings</h4>
+                        <ul className="pl-0">
+                          {[5, 4, 3, 2, 1].map((star) => (
+                            <li
+                              style={{
+                                cursor: "pointer",
+                                listStyleType: "none",
+                              }}
+                              key={star}
+                              onClick={() => setRatings(star)}
+                            >
+                              <div className="rating-outer">
+                                <div
+                                  className="rating-inner"
+                                  style={{
+                                    width: `${star * 20}%`,
+                                  }}
+                                ></div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                   <div className="col-6 col-md-9">
+                  <div className="col-6 col-md-9">
                     <div className="row">
                       {!isEmpty(products) &&
                         products.map((product) => {
@@ -75,7 +140,7 @@ export default function Home() {
                           );
                         })}
                     </div>
-                  </div> 
+                  </div>
                 </Fragment>
               ) : (
                 !isEmpty(products) &&
@@ -87,11 +152,11 @@ export default function Home() {
               )}
             </div>
           </section>
-          {totalProductPerPage <= productsCount && (
+          {resPerPage <= count && (
             <div className="d-flex justify-content-center mt-5">
               <Pagination
                 activePage={currentPage}
-                itemsCountPerPage={totalProductPerPage}
+                itemsCountPerPage={resPerPage}
                 totalItemsCount={productsCount}
                 onChange={setCurrentPageNumber}
                 nextPageText={"Next"}

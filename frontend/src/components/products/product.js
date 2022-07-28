@@ -15,7 +15,7 @@ const Product = ({ product, col }) => {
               <div
                 className="rating-inner"
                 style={{ width: `${(product.ratings / 5) * 100} %` }}
-              ></div>
+              >Ratings AAAAAAAAAAAAAAAAAAAAAAAAA: {product.ratings}</div>
             </div>
             <span id="no_of_reviews">{product.numOfReviews} Reviews</span>
           </div>
