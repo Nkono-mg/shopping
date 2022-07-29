@@ -5,17 +5,26 @@ const catchAsyncError = require("../../middlewares/catchAsyncError");
 const sendToken = require("../../utils/jwtToken");
 const sendEmail = require("../../utils/sendEmail");
 const crypto = require("crypto");
+const cloudinary = require("cloudinary")
 
 //Register a user
 module.exports.registerUser = catchAsyncError(async (req, res, next) => {
+
+  //set up avatar
+  const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    folder: "avatars",
+    with: 100,
+    crop: "scale"
+  })
+
   const { name, email, password } = req.body;
   const user = await userModel.create({
     name,
     email,
     password,
     avatar: {
-      public_id: "zzz",
-      url: "zzzzzzzzzzzzzzzzzzzzzzzz",
+      public_id: result.public_id,
+      url: result.secure_url,
     },
   });
   /* const token = user.getJwtToken();
@@ -51,7 +60,9 @@ module.exports.loginUser = catchAsyncError(async (req, res, next) => {
     }) */
 
   //Replaced by sendToken function
-  return await sendToken(user, 200, res);
+  setTimeout(async () => {
+    return await sendToken(user, 200, res);
+  }, 5000);
 });
 
 //Forgot password send email
@@ -113,14 +124,14 @@ module.exports.resetPasswordUser = catchAsyncError(async (req, res, next) => {
 
 //logout user
 module.exports.logoutUser = catchAsyncError(async (req, res, next) => {
-  await res.cookie("token",null, {
+  await res.cookie("token", null, {
     expires: new Date(Date.now()),
     httpOnly: true,
   });
   return res.status(200).json({
     success: true,
     message: "Logged out",
-  }); 
+  });
 });
 
 //Get currently logged in user details

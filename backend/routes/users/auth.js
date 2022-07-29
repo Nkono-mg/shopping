@@ -19,7 +19,7 @@ const {
 } = require("../../controllers/users/authController");
 
 router.route("/register").post(registerUser);
-router.route("/login").get(loginUser);
+router.route("/login").post(loginUser);
 router.route("/logout").get(logoutUser);
 router.route("/password/forgot").post(forgotPasswordUser);
 router.route("/reset/password/:token").put(resetPasswordUser);
