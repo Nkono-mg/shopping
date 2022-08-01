@@ -62,7 +62,7 @@ module.exports.loginUser = catchAsyncError(async (req, res, next) => {
   //Replaced by sendToken function
   setTimeout(async () => {
     return await sendToken(user, 200, res);
-  }, 5000);
+  }, 1000);
 });
 
 //Forgot password send email

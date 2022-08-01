@@ -13,4 +13,4 @@ const sendToken = async (user, statusCode, res)=>{
     user
   }); // 'token' is the name of this token
 }
-module.exports = sendToken;
+module.exports = sendToken; 

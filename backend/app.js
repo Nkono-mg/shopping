@@ -4,7 +4,7 @@ const bodyPrser = require("body-parser");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const errorMiddleware = require("./middlewares/errors");
-const cloudinary = require("cloudinary");
+const fileUpload = require('express-fileupload')
 
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -20,13 +20,7 @@ app.use(express.json());
 app.use(bodyPrser.json());
 app.use(bodyPrser.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-//Setting up cloudinary config
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  cloud_api_key: process.env.CLOUDINARY_API_KEY,
-  cloud_api_secret: process.env.CLOUDINARY_API_SECRET
-});
+app.use(fileUpload());
 
 //import all routes
 const products = require("./routes/products/productRoute");

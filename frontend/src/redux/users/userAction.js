@@ -62,7 +62,7 @@ export const userRegister = (userData) => async (dispatch) => {
       });
     }
   };
-
+ 
 //Clear error
 export const clearErrors = () => async (dispatch) => {
   dispatch({
