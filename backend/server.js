@@ -15,11 +15,11 @@ dotenv.config({path: "backend/config/config.env"});
 connectDB(); 
 
 //Setting up cloudinary config
-cloudinary.config({
+ /*  cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    cloud_api_key: process.env.CLOUDINARY_API_KEY,
-    cloud_api_secret: process.env.CLOUDINARY_API_SECRET
-  });
+    cloud_api_key: process.env.CLOUDINARY_API_KEY, 
+    cloud_api_secret: process.env.CLOUDINARY_API_SECRET,
+  });   */
 
 const server = app.listen(process.env.PORT, () => {
     console.log(`Server started on port ${process.env.PORT} in ${process.env.NODE_ENV}mode`);

@@ -5,27 +5,28 @@ const catchAsyncError = require("../../middlewares/catchAsyncError");
 const sendToken = require("../../utils/jwtToken");
 const sendEmail = require("../../utils/sendEmail");
 const crypto = require("crypto");
-const cloudinary = require("cloudinary")
+const { cloudinary } = require("../../utils/cloudinary");
 
 //Register a user
 module.exports.registerUser = catchAsyncError(async (req, res, next) => {
-
+  
+  //console.log(req.body.avatar)
   //set up avatar
-  const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
-    folder: "avatars",
-    with: 100,
-    crop: "scale"
-  })
-
+    const result = await cloudinary.uploader.upload(req.body.avatar, {
+    folder: "profiles", 
+    with: 150,
+    crop: "scale",
+    upload_preset: "shopping_cloud"
+  })   
   const { name, email, password } = req.body;
-  const user = await userModel.create({
-    name,
+  const user = await userModel.create({ 
+    name, 
     email,
     password,
-    avatar: {
+       avatar: {
       public_id: result.public_id,
       url: result.secure_url,
-    },
+    },    
   });
   /* const token = user.getJwtToken();
     return res.status(200).json({
@@ -53,7 +54,7 @@ module.exports.loginUser = catchAsyncError(async (req, res, next) => {
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Invalid Password", 401));
   }
-  /*    const token = user.getJwtToken();
+  /*    const token = user.getJwtToken(); 
     return res.status(200).json({
         success: true,
         token
@@ -124,7 +125,7 @@ module.exports.resetPasswordUser = catchAsyncError(async (req, res, next) => {
 
 //logout user
 module.exports.logoutUser = catchAsyncError(async (req, res, next) => {
-  await res.cookie("token", null, {
+  await res.cookie("jwt", "", {
     expires: new Date(Date.now()),
     httpOnly: true,
   });

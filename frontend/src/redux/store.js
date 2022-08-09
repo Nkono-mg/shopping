@@ -8,6 +8,7 @@ const reducer = combineReducers({
   products: productReducer,
   productDetails: productDetailsReducer,
   authUser: authReducer,
+  //loadUser: loadUserReducer
 });
 let initialState = {};
 const middleware = [thunk];

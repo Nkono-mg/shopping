@@ -12,7 +12,7 @@ const Login = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuthenticatedUser, error, loading, user } = useSelector(
+  const { isAuthenticatedUser, error, loading} = useSelector(
     (state) => state.authUser
   );
 
@@ -44,7 +44,7 @@ const Login = () => {
               <form className="shadow-lg" onSubmit={(e) => loginHandler(e)}>
                 <h1 className="mb-3">Login</h1>
                 <div className="form-group">
-                  <label Htmlfor="email_field">Email</label>
+                  <label htmlFor="email_field">Email</label>
                   <input
                     type="email"
                     id="email_field"
@@ -53,8 +53,8 @@ const Login = () => {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
-                <div className="form-group">
-                  <label Htmlfor="password_field">Password</label>
+                <div className="form-group"> 
+                  <label htmlFor="password_field">Password</label>
                   <input
                     type="password"
                     id="password_field"

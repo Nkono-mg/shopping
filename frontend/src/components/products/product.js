@@ -5,7 +5,7 @@ const Product = ({ product, col }) => {
   return (
     <div className={`col-sm-12 col-md-6 col-lg-${col} my-3`} key={product._id}>
       <div className="card p-3 rounded">
-        <img className="card-img-top mx-auto" src="" alt={product.name} />
+        <img className="card-img-top mx-auto" src={product.images[0].url} alt={product.name} />
         <div className="card-body d-flex flex-column">
           <h5 className="card-title">
             <Link to={`/product/${product._id}`}>{product.name}</Link>
@@ -15,7 +15,7 @@ const Product = ({ product, col }) => {
               <div
                 className="rating-inner"
                 style={{ width: `${(product.ratings / 5) * 100} %` }}
-              >Ratings AAAAAAAAAAAAAAAAAAAAAAAAA: {product.ratings}</div>
+              >Ratings: {product.ratings}</div>
             </div>
             <span id="no_of_reviews">{product.numOfReviews} Reviews</span>
           </div>

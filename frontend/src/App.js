@@ -6,8 +6,15 @@ import ProductDetails from "./components/products/productDetails";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/users/Login";
 import Register from "./components/users/Register";
+//import { loadUser } from "./redux/users/userAction";
+import store from "./redux/store";
+import {useEffect} from "react";
 
 function App() {
+  /* useEffect(()=>{
+     store.dispatch(loadUser());
+  }, []) */
+  
   return (
     <BrowserRouter>
       <div className="App">
@@ -18,7 +25,7 @@ function App() {
             <Route path="/search/:keyword" element={<Home />} />
             <Route path="/product/:id" element={<ProductDetails />} /> 
             <Route path="/user/login" element={<Login />} /> 
-            <Route path="/user/register" element={<Register />} />
+            <Route path="/user/register" element={<Register />} /> 
           </Routes>
         </div>
         <Footer />

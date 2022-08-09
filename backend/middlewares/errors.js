@@ -1,9 +1,9 @@
 const ErrorHandler = require("../utils/errorHandler");
 
 module.exports = (err, req, res, next) => { 
-  err.statusCode = err.statusCode || 500;
+  let statusCode = err.statusCode ? err.statusCode : 500;
   if (process.env.NODE_ENV.match(/DEVELOPMENT/i)) {
-     return res.status(err.statusCode).json({ 
+     return res.status(statusCode).json({ 
       success: false,
       error: err, 
       errorMessage: err.message,
@@ -13,7 +13,7 @@ module.exports = (err, req, res, next) => {
     let error = { ...err }; 
     error.message = err.message; 
     //wrong Mongoose Object ID Error 
-    if(err.name === "CastError"){
+    if(err.name === "CastError"){ 
         const message = `Ressource not found . Invalid ${err.path}`
         error = new ErrorHandler(message, 400)
     }
@@ -37,7 +37,7 @@ module.exports = (err, req, res, next) => {
     const message = `Json Web Token is expired, Please try again`;
     error = new ErrorHandler(message, 400)
 }
-    return res.status(error.statusCode).json({ 
+    return res.status(statusCode).json({ 
       success: false, 
       error: err, 
       message: error.message || `Internal Server Error`,
