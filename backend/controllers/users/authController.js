@@ -5,7 +5,7 @@ const catchAsyncError = require("../../middlewares/catchAsyncError");
 const sendToken = require("../../utils/jwtToken");
 const sendEmail = require("../../utils/sendEmail");
 const crypto = require("crypto");
-const { cloudinary } = require("../../utils/cloudinary");
+const cloudinary  = require("../../utils/cloudinary");
 
 //Register a user
 module.exports.registerUser = catchAsyncError(async (req, res, next) => {
