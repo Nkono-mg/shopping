@@ -16,7 +16,8 @@ module.exports.registerUser = catchAsyncError(async (req, res, next) => {
     folder: "profiles", 
     with: 150,
     crop: "scale",
-    upload_preset: "shopping_cloud"
+     upload_preset: "shopping_cloud",
+    allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp", "gif"] 
   })   
   const { name, email, password } = req.body;
   const user = await userModel.create({ 
