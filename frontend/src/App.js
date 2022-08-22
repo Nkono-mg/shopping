@@ -11,6 +11,8 @@ import store from "./redux/store";
 import { useEffect } from "react";
 import Profile from "./components/users/Profile";
 import ProtectedRoute from "./components/routes/protectedRoute";
+import UpdateProfile from "./components/users/UpdateProfile";
+import Cart from "./components/cart/Cart";
 
 function App() {
   useEffect(() => {
@@ -36,7 +38,15 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/" element={<Navigate replace to="/" />} />
+            <Route
+              path="/user/edit/profile"
+              element={
+                <ProtectedRoute>
+                  <UpdateProfile />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/cart" element={<Cart />} />
           </Routes>
         </div>
         <Footer />

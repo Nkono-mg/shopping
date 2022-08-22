@@ -19,12 +19,13 @@ const Login = () => {
   useEffect(() => {
     if (isAuthenticatedUser) {
       navigate("/");
+      //window.location("/")
     }
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, error, isAuthenticatedUser, alert, navigate]);
+  }, [dispatch, error, isAuthenticatedUser, alert,navigate]);
 
   const loginHandler = (e) => {
     e.preventDefault();

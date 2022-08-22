@@ -130,14 +130,14 @@ module.exports.logoutUser = catchAsyncError(async (req, res, next) => {
     expires: new Date(Date.now()),
     httpOnly: true,
   });
-  return res.status(200).json({
+   return res.status(200).json({ 
     success: true,
-    message: "Logged out",
+    message: "Logged out", 
   });
 });
 
 //Get currently logged in user details
-module.exports.getUserProfile = catchAsyncError(async (req, res, next) => {
+module.exports.getUserProfile = catchAsyncError(async (req, res, next) => { 
   const user = await userModel.findById(req.user.id);
   return res.status(200).json({
     success: true,
@@ -165,6 +165,23 @@ module.exports.updateUserProfil = catchAsyncError(async (req, res, next) => {
     email: req.body.email,
   };
   //update avatar:: todo
+  if(req.body.avatar !==""){
+    const user = await userModel.findById(req.user.id);
+    const image_id = await user.avatar.public_id;
+    const res = await cloudinary.uploader.destroy(image_id);
+    const result = await cloudinary.uploader.upload(req.body.avatar, {
+      folder: "profiles", 
+      with: 150,
+      crop: "scale",
+       upload_preset: "shopping_cloud",
+      allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp", "gif"] 
+    })
+    newUserData.avatar = {
+      public_id: result.public_id,
+      url: result.secure_url,
+
+    }
+  }
 
   const user = await userModel.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,

@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect, Fragment, useState} from "react";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -8,6 +8,7 @@ import {
 import Loader from "../layout/Loader";
 import { useParams } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
+import { addItemToCart } from "../../redux/cart/cartAction";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,8 @@ const ProductDetails = () => {
   );
   const alert = useAlert();
   const { id } = useParams();
+  let [qty, setQty] = useState(1);
+
   useEffect(() => {
     if (error) {
       alert.error(error);
@@ -23,6 +26,12 @@ const ProductDetails = () => {
     }
     dispatch(getProductDetails(id));
   }, [dispatch, alert, error, id]);
+
+  const addToCart = () =>{
+    dispatch(addItemToCart(id, qty))
+    alert.success("Item added to cart")
+  }
+
   return (
     <Fragment>
       {loading ? (
@@ -59,19 +68,19 @@ const ProductDetails = () => {
             <hr />
             <p id="product_price">${product.price}</p>
             <div className="stockCounter d-inline">
-              <span className="btn btn-danger minus">-</span>
+              <span className="btn btn-danger minus" onClick={()=>setQty(qty - 1)}>-</span>
               <input
                 type="number"
                 className="form-control count d-inline"
-                value="1"
+                value={qty > 0 && qty <= product.stock ? qty : 1}
                 readOnly
               />
-              <span className="btn btn-primary plus">+</span>
+              <span className="btn btn-primary plus" onClick={()=>setQty(qty + 1)}>+</span>
             </div>
             <button
               type="button"
               id="cart_btn"
-              className="btn btn-primary d-inline ml-4"
+              className="btn btn-primary d-inline ml-4" disabled={product.stock === 0} onClick={addToCart}
             >
               Add to Cart
             </button>
@@ -82,7 +91,7 @@ const ProductDetails = () => {
                 id="stock_status"
                 className={product.stock > 0 ? `greenColor` : `redColor`}
               >
-                {product.stock > 0 ? `In Stock` : `Out of Stock`}
+                {product.stock > 0 ? `In Stock: ${product.stock}` : `Out of Stock: ${product.stock}`}
               </span>
             </p>
             <hr />

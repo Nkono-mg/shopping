@@ -17,5 +17,12 @@ export const LOAD_USER_FAIL = "LOAD_USER_FAIL";
 export const LOGOUT_USER_SUCCESS = "LOGOUT_USER_SUCCESS";
 export const LOGOUT_USER_FAIL = "LOGOUT_USER_FAIL";
 
+//Update user action type
+export const UPDATE_PROFILE_REQUEST = "UPDATE_USER_REQUEST";
+export const UPDATE_PROFILE_SUCCESS = "UPDATE_USER_SUCCESS";
+export const UPDATE_PROFILE_RESET = "UPDATE_PROFILE_RESET";
+export const UPDATE_PROFILE_FAIL = "UPDATE_USER_FAIL";
+
+
 //Clear error action type
 export const CLEAR_ERRORS = "CLEAR_ERRORS";

@@ -12,6 +12,9 @@ import {
   LOAD_USER_FAIL,
   LOGOUT_USER_SUCCESS,
   LOGOUT_USER_FAIL,
+  UPDATE_PROFILE_SUCCESS,
+  UPDATE_PROFILE_RESET,
+  UPDATE_PROFILE_FAIL,
 } from "./type";
 
 //login user
@@ -25,12 +28,12 @@ export const userLogin = (email, password) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     };
-    let link = `http://localhost:5000/api/shopping/login`;
+    const link = `http://localhost:5000/api/shopping/login`;
     if (email && password) {
       const { data } = await axios.post(link, { email, password }, config);
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: data.user,
+        payload: data,
       });
     }
   } catch (error) {
@@ -53,7 +56,7 @@ export const userRegister = (userData) => async (dispatch) => {
       },
     };
 
-    let link = `http://localhost:5000/api/shopping/register`;
+    const link = `http://localhost:5000/api/shopping/register`;
     if (userData) {
       const { data } = await axios.post(link, userData, config);
       dispatch({
@@ -75,7 +78,7 @@ export const loadUser = () => async (dispatch) => {
     dispatch({
       type: LOAD_USER_REQUEST,
     });
-    let link = `http://localhost:5000/api/shopping/me/profile`;
+    const link = `http://localhost:5000/api/shopping/me/profile`;
     const { data } = await axios.get(link);
     dispatch({
       type: LOAD_USER_SUCCESS,
@@ -92,7 +95,7 @@ export const loadUser = () => async (dispatch) => {
 //Load user
 export const logoutUser = () => async (dispatch) => {
   try {
-    let link = `http://localhost:5000/api/shopping/logout`;
+    const link = `http://localhost:5000/api/shopping/logout`;
     await axios.get(link);
     dispatch({
       type: LOGOUT_USER_SUCCESS,
@@ -100,6 +103,31 @@ export const logoutUser = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: LOGOUT_USER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+//Update user profile
+export const updateProfile = (userDataUpdate) => async (dispatch) => {
+  try {
+    dispatch({
+      type: UPDATE_PROFILE_RESET,
+    });
+    const config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    const link = `http://localhost:5000/api/shopping/me/profile/update`;
+    const { data } = await axios.put(link, userDataUpdate, config);
+    dispatch({
+      type: UPDATE_PROFILE_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_PROFILE_FAIL,
       payload: error.response.data.message,
     });
   }
