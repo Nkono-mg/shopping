@@ -13,6 +13,7 @@ import Profile from "./components/users/Profile";
 import ProtectedRoute from "./components/routes/protectedRoute";
 import UpdateProfile from "./components/users/UpdateProfile";
 import Cart from "./components/cart/Cart";
+import Shipping from "./components/cart/Shipping";
 
 function App() {
   useEffect(() => {
@@ -46,7 +47,16 @@ function App() {
                 </ProtectedRoute>
               }
             />
+             <Route
+              path="/shipping"
+              element={
+                <ProtectedRoute>
+                  <Shipping />
+                </ProtectedRoute>
+              }
+            /> 
             <Route path="/cart" element={<Cart />} />
+           {/*  <Route path="/shipping" element={<Shipping />} /> */}
           </Routes>
         </div>
         <Footer />

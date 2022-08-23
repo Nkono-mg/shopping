@@ -4,10 +4,12 @@ import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../layout/Loader";
 import { addItemToCart, removeItemFromCart } from "../../redux/cart/cartAction";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cartProduct.cartItems);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const increaseQuantity = (id, quantity, stock) => {
     let newQty = quantity + 1;
@@ -27,6 +29,12 @@ const Cart = () => {
 
   const removeItemCart = (id) => {
     dispatch(removeItemFromCart(id));
+  };
+
+  const checkoutHandler = (e) => {
+    e.preventDefault();
+    //navigate("/login?redirect=shipping");
+    navigate("/shipping");
   };
 
   return (
@@ -97,7 +105,6 @@ const Cart = () => {
                             </span>
                           </div>
                         </div>
-
                         <div className="col-4 col-lg-1 mt-4 mt-lg-0">
                           <i
                             id="delete_cart_item"
@@ -129,15 +136,20 @@ const Cart = () => {
                   Est. total:{" "}
                   <span className="order-summary-values">
                     $
-                    {cartItems.reduce(
-                      (acc, item) => acc + item.quantity * item.price,
-                      0
-                    ).toFixed(2)}
+                    {cartItems
+                      .reduce(
+                        (acc, item) => acc + item.quantity * item.price,
+                        0
+                      )
+                      .toFixed(2)}
                   </span>
                 </p>
-
                 <hr />
-                <button id="checkout_btn" className="btn btn-primary btn-block">
+                <button
+                  id="checkout_btn"
+                  className="btn btn-primary btn-block"
+                  onClick={(e) => checkoutHandler(e)}
+                >
                   Check out
                 </button>
               </div>

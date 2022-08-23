@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../layout/Loader";
 import { Link } from "react-router-dom";
 import { userLogin, clearErrors } from "../../redux/users/userAction";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -15,17 +15,19 @@ const Login = () => {
   const { isAuthenticatedUser, error, loading} = useSelector(
     (state) => state.authUser
   );
+  const location = useLocation();
+
+  const redirect = location.search ? location.search.split("=")[1] : "/";
 
   useEffect(() => {
     if (isAuthenticatedUser) {
-      navigate("/");
-      //window.location("/")
+      navigate(redirect);
     }
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, error, isAuthenticatedUser, alert,navigate]);
+  }, [dispatch, error, isAuthenticatedUser, alert,navigate, redirect]);
 
   const loginHandler = (e) => {
     e.preventDefault();
