@@ -10,12 +10,11 @@ export const cartReducer = (state = { cartItems: [], shippingInfo: {} }, action)
       if (isItemExist) {
         return {
           ...state,
-          cartItems: [
+          cartItems: 
             state.cartItems.map((i) =>
               i.product === isItemExist.product ? item : i
-            ),
-          ],
-        };
+            )
+        }
       } else {
         return {
           ...state,

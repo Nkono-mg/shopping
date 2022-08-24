@@ -5,9 +5,10 @@ import Loader from "../layout/Loader";
 import { SaveShippingInfo } from "../../redux/cart/cartAction";
 import { useNavigate } from "react-router-dom";
 import { countries } from "countries-list";
+import CheckoutStep from "./CheckoutStep";
 
 const Shipping = () => {
-  const { shippingInfo } = useSelector((state) => state.cartProduct.shippingInfo);
+  const shippingInfo = useSelector((state) => state.cartProduct.shippingInfo);
   const [address, setAdress] = useState(shippingInfo.address);
   const [city, setCity] = useState(shippingInfo.city);
   const [postalCode, setPostalCode] = useState(shippingInfo.postalCode);
@@ -20,11 +21,12 @@ const Shipping = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(SaveShippingInfo({ address, city, postalCode, phoneNo, country }));
-    navigate(`/confrim`);
+    navigate(`/order/confirm`);
   };
 
   return (
     <Fragment>
+      <CheckoutStep shipping />
       <div className="row wrapper">
         <div className="col-10 col-lg-5">
           <form className="shadow-lg" onSubmit={(e) => submitHandler(e)}>

@@ -33,7 +33,6 @@ const Cart = () => {
 
   const checkoutHandler = (e) => {
     e.preventDefault();
-    //navigate("/login?redirect=shipping");
     navigate("/shipping");
   };
 
@@ -46,7 +45,6 @@ const Cart = () => {
           <h2 className="mt-5">
             Your Cart: <b>{cartItems.length} items</b>
           </h2>
-
           <div className="row d-flex justify-content-between">
             <div className="col-12 col-lg-8">
               {cartItems &&

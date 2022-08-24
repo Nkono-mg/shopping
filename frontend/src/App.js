@@ -14,8 +14,12 @@ import ProtectedRoute from "./components/routes/protectedRoute";
 import UpdateProfile from "./components/users/UpdateProfile";
 import Cart from "./components/cart/Cart";
 import Shipping from "./components/cart/Shipping";
+import { useSelector } from "react-redux";
+import ConfrimOrder from "./components/cart/ConfrimOrder";
 
-function App() {
+const App = ()=>{
+
+  const { isAuthenticated, user, loading } = useSelector(state => state.authUser)
   useEffect(() => {
     store.dispatch(loadUser());
   }, []);
@@ -55,8 +59,15 @@ function App() {
                 </ProtectedRoute>
               }
             /> 
+            <Route
+              path="/order/confirm"
+              element={
+                <ProtectedRoute>
+                  <ConfrimOrder />
+                </ProtectedRoute>
+              }
+            /> 
             <Route path="/cart" element={<Cart />} />
-           {/*  <Route path="/shipping" element={<Shipping />} /> */}
           </Routes>
         </div>
         <Footer />
