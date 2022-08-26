@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import CheckoutStep from "./CheckoutStep";
 import { useNavigate } from "react-router-dom";
 
-const ConfrimOrder = () => {
+const ConfirmOrder = () => {
   const { cartItems, shippingInfo } = useSelector((state) => state.cartProduct);
   const { user } = useSelector((state) => state.authUser);
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const ConfrimOrder = () => {
         totalPrice
     }
     sessionStorage.setItem("orderInfo", JSON.stringify(data));
-    navigate("/")
+    navigate("/order/payment")
   }
 
 
@@ -110,4 +110,4 @@ const ConfrimOrder = () => {
   );
 };
 
-export default ConfrimOrder;
+export default ConfirmOrder;

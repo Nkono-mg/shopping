@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Search from "./Search";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
@@ -10,11 +10,13 @@ const Header = () => {
   const alert = useAlert();
   const { user, loading } = useSelector((state) => state.authUser);
   const cartItems = useSelector((state)=>state.cartProduct.cartItems);
+  const navigate = useNavigate();
  
   const logoutHandler = (e)=>{
     e.preventDefault();
     dispatch(logoutUser());
     alert.success("Logged out successfully !");
+    navigate("/")
   }
   return (
     <Fragment>
@@ -67,7 +69,7 @@ const Header = () => {
                 ) : (<Link className="dropdown-item" to="/admin/dashboard">Dashboard</Link>)
                 }
                 <Link className="dropdown-item" to="/me">Profile</Link>
-                <Link className="dropdown-item text-danger" to="/" onClick={(e)=>logoutHandler(e)}>
+                <Link className="dropdown-item text-danger" to="#!" onClick={(e)=>logoutHandler(e)}>
                   Logout
                 </Link>
               </div>

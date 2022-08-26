@@ -40,6 +40,22 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
   }
 });
 
+//get admin all products
+exports.getAdminProducts = catchAsyncError(async (req, res, next) => {
+  
+  const products = await productModel.find();
+  if (!products) {
+    return next(new ErrorHandler("Product not found", 404));
+  } else {
+    return res.status(200).json({
+      success: true,
+      products
+      
+    });
+  }
+});
+
+
 //get one product
 module.exports.getOneProduct = catchAsyncError(async (req, res, next) => {
   if (!ObjectId.isValid(req.params.id)) {

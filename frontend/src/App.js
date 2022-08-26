@@ -15,13 +15,32 @@ import UpdateProfile from "./components/users/UpdateProfile";
 import Cart from "./components/cart/Cart";
 import Shipping from "./components/cart/Shipping";
 import { useSelector } from "react-redux";
-import ConfrimOrder from "./components/cart/ConfrimOrder";
+import ConfirmOrder from "./components/cart/ConfirmOrder";
+import { useState } from "react";
+import axios from "axios";
+import Payment from "./components/cart/Payment";
+//Payment import
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
-const App = ()=>{
+//Admin import
+import Dashboard from "./components/admin/Dashboard";
+import Product from "./components/admin/products/Product";
 
-  const { isAuthenticated, user, loading } = useSelector(state => state.authUser)
+const App = () => {
+  const { isAuthenticated, user, loading } = useSelector(
+    (state) => state.authUser
+  );
+  const [stripeApi, setStripeApi] = useState("");
+  const getStripeApiKey = async()=> {
+    const { data } = await axios.get(
+      `http://localhost:5000/api/shopping/stripeapi`
+    );
+    setStripeApi(data.stripeApiKey);
+  }
   useEffect(() => {
     store.dispatch(loadUser());
+    //getStripeApiKey();
   }, []);
 
   return (
@@ -51,22 +70,47 @@ const App = ()=>{
                 </ProtectedRoute>
               }
             />
-             <Route
+            <Route
               path="/shipping"
               element={
                 <ProtectedRoute>
                   <Shipping />
                 </ProtectedRoute>
               }
-            /> 
-            <Route
+            />
+             <Route
               path="/order/confirm"
               element={
                 <ProtectedRoute>
-                  <ConfrimOrder />
+                  <ConfirmOrder />
                 </ProtectedRoute>
               }
             /> 
+             <Route
+              path="/order/payment"
+              element={
+                <ProtectedRoute>
+                  <Payment />
+                </ProtectedRoute>
+              }
+            /> 
+              <Route
+              path="/admin/dashboard" isAdmin={true}
+              element={
+                <ProtectedRoute>
+                   <Dashboard />
+                </ProtectedRoute>
+              }
+            />  
+            {/*  <Route
+              path="/admin/products" isAdmin={true}
+              element={
+                <ProtectedRoute>
+                   <Product />
+                </ProtectedRoute>
+              }
+            />   */}
+            <Route path="/admin/products" element={<Product />} />
             <Route path="/cart" element={<Cart />} />
           </Routes>
         </div>
@@ -74,6 +118,6 @@ const App = ()=>{
       </div>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
