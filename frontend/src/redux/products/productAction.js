@@ -9,9 +9,37 @@ import {
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
+  NEW_PRODUCT_REQUEST, 
+  NEW_PRODUCT_SUCCESS,
+  NEW_PRODUCT_RESET,
+  NEW_PRODUCT_FAIL,
   CLEAR_ERRORS,
 } from "./type";
 
+//Create product
+export const newProduct = (productData) => async (dispatch) => {
+  try {
+    dispatch({
+      type: NEW_PRODUCT_REQUEST,
+    });
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const link = `http://localhost:5000/api/shopping/admin/products/new`
+    const   { data }  = await axios.post(link, productData, config); 
+    dispatch({ 
+      type: NEW_PRODUCT_SUCCESS,
+      payload: data
+    }); 
+  } catch (error) {
+    dispatch({
+      type: NEW_PRODUCT_FAIL, 
+      payload: error.response.data.message,
+    });
+  }
+};
 
 // Get all prouducts
 export const getProducts = (currentPage=1, keyword="", price, category, ratings=0) => async (dispatch) => {
@@ -68,7 +96,7 @@ export const getAdminProduct = () => async (dispatch) => {
     const   { data }  = await axios.get(`http://localhost:5000/api/shopping/admin/products`); 
     dispatch({ 
       type: ADMIN_PRODUCTS_SUCCESS,
-      payload: data.product
+      payload: data.products
     }); 
   } catch (error) {
     dispatch({

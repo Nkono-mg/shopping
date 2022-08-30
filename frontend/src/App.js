@@ -32,12 +32,12 @@ const App = () => {
     (state) => state.authUser
   );
   const [stripeApi, setStripeApi] = useState("");
-  const getStripeApiKey = async()=> {
+  const getStripeApiKey = async () => {
     const { data } = await axios.get(
       `http://localhost:5000/api/shopping/stripeapi`
     );
     setStripeApi(data.stripeApiKey);
-  }
+  };
   useEffect(() => {
     store.dispatch(loadUser());
     //getStripeApiKey();
@@ -78,42 +78,45 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-             <Route
+            <Route
               path="/order/confirm"
               element={
                 <ProtectedRoute>
                   <ConfirmOrder />
                 </ProtectedRoute>
               }
-            /> 
-             <Route
+            />
+            <Route
               path="/order/payment"
               element={
                 <ProtectedRoute>
                   <Payment />
                 </ProtectedRoute>
               }
-            /> 
-              <Route
-              path="/admin/dashboard" isAdmin={true}
-              element={
-                <ProtectedRoute>
-                   <Dashboard />
-                </ProtectedRoute>
-              }
-            />  
-            {/*  <Route
-              path="/admin/products" isAdmin={true}
-              element={
-                <ProtectedRoute>
-                   <Product />
-                </ProtectedRoute>
-              }
-            />   */}
-            <Route path="/admin/products" element={<Product />} />
+            />
             <Route path="/cart" element={<Cart />} />
           </Routes>
         </div>
+        <Routes>
+          <Route
+            path="/admin/dashboard"
+            isAdmin={true}
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/products"
+            isAdmin={true}
+            element={
+              <ProtectedRoute>
+                <Product />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
         <Footer />
       </div>
     </BrowserRouter>

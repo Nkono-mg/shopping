@@ -14,7 +14,8 @@ const Product = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, products } = useSelector((state) => state.products);
+  const { loading, error, products } = useSelector((state) => state.products); 
+  console.log(products)
 
   useEffect(() => {
     dispatch(getAdminProduct());
@@ -79,7 +80,6 @@ const Product = () => {
           ),
         });
       });
-
     return data;
   };
   const deleteProductHandler = (id) => {
