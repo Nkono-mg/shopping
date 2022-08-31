@@ -10,12 +10,11 @@ import {
 } from "../../../redux/products/productAction";
 import Sidebar from "../Sidebar";
 
-const Product = () => {
+const ProductList = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error, products } = useSelector((state) => state.products); 
-  console.log(products)
 
   useEffect(() => {
     dispatch(getAdminProduct());
@@ -100,7 +99,7 @@ const Product = () => {
             ) : (
               <MDBDataTable
                 data={setProducts()}
-                className="px-3"
+                className="px-1"
                 bordered
                 striped
                 hover
@@ -113,4 +112,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default ProductList;

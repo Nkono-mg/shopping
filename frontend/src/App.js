@@ -25,7 +25,8 @@ import { loadStripe } from "@stripe/stripe-js";
 
 //Admin import
 import Dashboard from "./components/admin/Dashboard";
-import Product from "./components/admin/products/Product";
+import ProductList from "./components/admin/products/ProductList";
+import NewProduct from "./components/admin/products/NewProduct";
 
 const App = () => {
   const { isAuthenticated, user, loading } = useSelector(
@@ -112,13 +113,25 @@ const App = () => {
             isAdmin={true}
             element={
               <ProtectedRoute>
-                <Product />
+                <ProductList />
               </ProtectedRoute>
             }
           />
+         <Route
+            path="/admin/product/create"
+            isAdmin={true}
+            element={
+              <ProtectedRoute>
+                <NewProduct />
+              </ProtectedRoute>
+            }
+          /> 
         </Routes>
-        <Footer />
+        {/* {!loading && user.role !=="admin" && (
+          <Footer />
+        ) } */}
       </div>
+      <Footer />
     </BrowserRouter>
   );
 };

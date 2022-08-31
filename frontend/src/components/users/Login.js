@@ -17,17 +17,17 @@ const Login = () => {
   );
   const location = useLocation();
 
-  const redirect = location.search ? location.search.split("=")[1] : "/";
+  //const redirect = location.search ? location.search.split("=")[1] : "/";
 
   useEffect(() => {
     if (isAuthenticatedUser) {
-      navigate(redirect);
+      navigate("/");
     }
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, error, isAuthenticatedUser, alert,navigate, redirect]);
+  }, [dispatch, error, isAuthenticatedUser, alert,navigate]);
 
   const loginHandler = (e) => {
     e.preventDefault();

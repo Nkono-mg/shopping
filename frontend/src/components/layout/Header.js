@@ -4,6 +4,7 @@ import Search from "./Search";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { logoutUser } from "../../redux/users/userAction";
+import { useCookies } from "react-cookie";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -11,10 +12,18 @@ const Header = () => {
   const { user, loading } = useSelector((state) => state.authUser);
   const cartItems = useSelector((state)=>state.cartProduct.cartItems);
   const navigate = useNavigate();
- 
+  const cookies = useCookies();
+
+  
+  const removeCookie = (keyCookie)=>{
+    if(window !=="undefined"){
+        cookies.remove(keyCookie,{expires: 1});
+    }
+} 
   const logoutHandler = (e)=>{
     e.preventDefault();
     dispatch(logoutUser());
+    removeCookie("jwt")
     alert.success("Logged out successfully !");
     navigate("/")
   }

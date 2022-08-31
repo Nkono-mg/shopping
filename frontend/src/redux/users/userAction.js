@@ -25,16 +25,18 @@ export const userLogin = (email, password) => async (dispatch) => {
     });
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
+      withCredentials: true
     };
     const link = `http://localhost:5000/api/shopping/login`;
     if (email && password) {
-      const { data } = await axios.post(link, { email, password }, config);
+      const { data } = await axios.post(link,{email,password }, config);
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: data,
+        payload: data.user,
       });
+
     }
   } catch (error) {
     dispatch({

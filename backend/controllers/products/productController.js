@@ -3,9 +3,33 @@ const ObjectId = require("mongoose").Types.ObjectId;
 const ErrorHandler = require("../../utils/errorHandler");
 const catchAsyncError = require("../../middlewares/catchAsyncError");
 const APIFeatures = require("../../utils/apiFeatures");
+const cloudinary = require("../../utils/cloudinary");
 
 //Create a new product
 exports.addProduct = catchAsyncError(async (req, res, next) => {
+
+  let images = [];
+  if (typeof (req.body.images === "string")) {
+    images.push(req.body.images);
+  } else {
+    images = req.body.images;
+  }
+  
+  let imagesLinks = [];
+
+  for (let i = 0; i < images.length; i++) {
+    const result = await cloudinary.uploader.upload(images[i], {
+      folder: 'products',
+      upload_preset: "shopping_cloud",
+      allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp", "gif"]
+    });
+
+    imagesLinks.push({
+      public_id: result.public_id,
+      url: result.secure_url
+    });
+  }
+  req.body.images = imagesLinks;
   req.body.user = req.user.id; //Add user reference in product
   const productData = await productModel.create(req.body);
   return res.status(201).json({
@@ -16,7 +40,7 @@ exports.addProduct = catchAsyncError(async (req, res, next) => {
 
 //get all products
 exports.getProducts = catchAsyncError(async (req, res, next) => {
-  const resPerPage = 4; 
+  const resPerPage = 4;
   const productCount = await productModel.countDocuments();
   const apiFeature = new APIFeatures(productModel.find(), req.query)
     .search()
@@ -33,8 +57,7 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
         productCount,
         resPerPage,
         filteredProductsCount,
-        products
-        
+        products,
       });
     }, 500);
   }
@@ -42,19 +65,16 @@ exports.getProducts = catchAsyncError(async (req, res, next) => {
 
 //get admin all products
 exports.getAdminProducts = catchAsyncError(async (req, res, next) => {
-  
   const products = await productModel.find();
   if (!products) {
     return next(new ErrorHandler("Product not found", 404));
   } else {
     return res.status(200).json({
       success: true,
-      products
-      
+      products,
     });
   }
 });
-
 
 //get one product
 module.exports.getOneProduct = catchAsyncError(async (req, res, next) => {
