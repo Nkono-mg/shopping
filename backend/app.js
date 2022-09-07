@@ -1,13 +1,16 @@
 const express = require("express");
 const app = express();
 const bodyPrser = require("body-parser");
-const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const errorMiddleware = require("./middlewares/errors");
 const fileUpload = require("express-fileupload");
+const cors = require("cors");
+const dotenv = require("dotenv");
 
+//Access API 
+dotenv.config({path: "backend/config/config.env"}); 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: process.env.CLIENT_URL,
   credentials: true,
   allowedHeaders: ["sessionId", "Content-Type"],
   exposedHeaders: ["sessionId"],
@@ -21,6 +24,7 @@ app.use(bodyPrser.json());
 app.use(bodyPrser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(fileUpload());
+
 
 //import all routes
 const products = require("./routes/products/productRoute");
