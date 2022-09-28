@@ -44,7 +44,6 @@ export const newProduct = (productData) => async (dispatch) => {
 // Get all prouducts
 export const getProducts = (currentPage=1, keyword="", price, category, ratings=0) => async (dispatch) => {
   try {
-
     dispatch({
       type: ALL_PRODUCTS_REQUEST,
     });

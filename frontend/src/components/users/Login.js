@@ -16,18 +16,17 @@ const Login = () => {
     (state) => state.authUser
   );
   const location = useLocation();
-
-  //const redirect = location.search ? location.search.split("=")[1] : "/";
+  const redirect = location.search ? location.search.split("=")[1] : "/";
 
   useEffect(() => {
     if (isAuthenticatedUser) {
-      navigate("/");
+      navigate(redirect);
     }
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, error, isAuthenticatedUser, alert,navigate]);
+  }, [dispatch, error, isAuthenticatedUser, alert,navigate, redirect]);
 
   const loginHandler = (e) => {
     e.preventDefault();

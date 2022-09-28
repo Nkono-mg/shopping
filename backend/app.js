@@ -36,8 +36,21 @@ app.use("/api/shopping", orders);
 app.use("/api/shopping", userAuth);
 app.use("/shopping", payments);
 
-//Middlewares to handle errors
+//Middleware to handle errors
 app.use(errorMiddleware);
+
+//Vercel config
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+app.get("*", function(_,res){
+  res.sendFile(
+    path.join(__dirname, "../frontend/build/index.html"),
+    function(err){
+      if(err){
+        res.status(500).send(err)
+      }
+    }
+  )
+})
 
 //export app
 module.exports = app;

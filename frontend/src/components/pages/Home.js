@@ -9,6 +9,7 @@ import Pagination from "react-js-pagination";
 import { useParams } from "react-router-dom";
 import "rc-slider/assets/index.css";
 import Slider from "rc-slider";
+import MetaData from "../layout/MetaData";
 const { createSliderWithTooltip } = Slider;
 const Range = createSliderWithTooltip(Slider.Range);
 
@@ -55,10 +56,11 @@ export default function Home() {
 
   return (
     <Fragment>
+      <MetaData title={`The Best Product Quality on Line`} />
       {loading ? (
         <Loader />
       ) : (
-        <Fragment>
+        <Fragment> 
           <h1 id="products_heading">Latest products ({productsCount})</h1>
           <section id="products" className="container mt-5">
             <div className="row">

@@ -34,13 +34,13 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
-  category: {
+   category: {
     type: String,
     required: [true, "Please select category for this product"],
     enum: {
       values: [],  
       message: "Please select category for product",
-    },
+    }, 
   },
   seller: {
     type: String,
@@ -71,11 +71,11 @@ const productSchema = new mongoose.Schema({
       }, 
     },
   ],
-  user: {
+   user: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
     required: true,
-  },
+  }, 
   createdAt: {
     type: Date,
     default: Date.now,

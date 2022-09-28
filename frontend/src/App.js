@@ -28,7 +28,7 @@ import Dashboard from "./components/admin/Dashboard";
 import ProductList from "./components/admin/products/ProductList";
 import NewProduct from "./components/admin/products/NewProduct";
 
-const App = () => {
+ const App = () => {
   const { isAuthenticated, user, loading } = useSelector(
     (state) => state.authUser
   );
