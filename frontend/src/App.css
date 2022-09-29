@@ -614,3 +614,11 @@ ul.CTAs a {
   font-size: 0.8rem;
   color: grey;
 }
+
+/* Page not found*/
+.pagenotfound{
+  display: block; 
+  text-align: center;
+  margin-top: 10rem;
+  font-family: Arial, Helvetica, sans-serif;
+}

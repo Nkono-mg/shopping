@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment, useState} from "react";
+import React, { useEffect, Fragment, useState } from "react";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -6,6 +6,7 @@ import {
   clearErrors,
 } from "../../redux/products/productAction";
 import Loader from "../layout/Loader";
+import MetaData from "../layout/MetaData";
 import { useParams } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
 import { addItemToCart } from "../../redux/cart/cartAction";
@@ -27,31 +28,30 @@ const ProductDetails = () => {
     dispatch(getProductDetails(id));
   }, [dispatch, alert, error, id]);
 
-  const addToCart = () =>{
-    dispatch(addItemToCart(id, qty))
-    alert.success("Item added to cart")
-  }
+  const addToCart = () => {
+    dispatch(addItemToCart(id, qty));
+    alert.success("Item added to cart");
+  };
 
   return (
     <Fragment>
+      <MetaData title={`The Best Product Quality on Line`} />
       {loading ? (
         <Loader />
       ) : (
-        <div className="row f-flex justify-content-around">
+        <div className="row d-flex justify-content-around">
           <div className="col-12 col-lg-5 img-fluid" id="product_image">
             <Carousel pause="hover">
               {product.images &&
-                product.images.map((image) => {
-                  return (
-                    <Carousel.Item key={image.public_id}>
-                      <img
-                        className="d-block w-1000"
-                        src={image.url}
-                        alt={product.title}
-                      />
-                    </Carousel.Item>
-                  );
-                })}
+                product.images.map((image) => (
+                  <Carousel.Item key={image.public_id}>
+                    <img
+                      className="d-block w-100"
+                      src={image.url}
+                      alt={product.title}
+                    />
+                  </Carousel.Item>
+                ))}
             </Carousel>
           </div>
           <div className="col-12 col-lg-5 mt-5">
@@ -68,19 +68,31 @@ const ProductDetails = () => {
             <hr />
             <p id="product_price">${product.price}</p>
             <div className="stockCounter d-inline">
-              <span className="btn btn-danger minus" onClick={()=>setQty(qty - 1)}>-</span>
+              <span
+                className="btn btn-danger minus"
+                onClick={() => setQty(qty - 1)}
+              >
+                -
+              </span>
               <input
                 type="number"
                 className="form-control count d-inline"
                 value={qty > 0 && qty <= product.stock ? qty : 1}
                 readOnly
               />
-              <span className="btn btn-primary plus" onClick={()=>setQty(qty + 1)}>+</span>
+              <span
+                className="btn btn-primary plus"
+                onClick={() => setQty(qty + 1)}
+              >
+                +
+              </span>
             </div>
             <button
               type="button"
               id="cart_btn"
-              className="btn btn-primary d-inline ml-4" disabled={product.stock === 0} onClick={addToCart}
+              className="btn btn-primary d-inline ml-4"
+              disabled={product.stock === 0}
+              onClick={addToCart}
             >
               Add to Cart
             </button>
@@ -91,7 +103,9 @@ const ProductDetails = () => {
                 id="stock_status"
                 className={product.stock > 0 ? `greenColor` : `redColor`}
               >
-                {product.stock > 0 ? `In Stock: ${product.stock}` : `Out of Stock: ${product.stock}`}
+                {product.stock > 0
+                  ? `In Stock: ${product.stock}`
+                  : `Out of Stock: ${product.stock}`}
               </span>
             </p>
             <hr />

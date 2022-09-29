@@ -20,7 +20,7 @@ const Search = () => {
         <input
           type="text"
           id="search_field"
-          className="form-control"
+          className="form-control"  
           placeholder="Enter Product Name ..."
           onChange={(e)=>setKeyword(e.target.value)}
         />

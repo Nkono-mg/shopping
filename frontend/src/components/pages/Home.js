@@ -26,7 +26,7 @@ export default function Home() {
     error,
   } = useSelector((state) => state.products);
   const { keyword } = useParams();
-  const [price, setPrice] = useState([1, 1000000000]);
+  const [price, setPrice] = useState([1,10000]); 
   const [category, setCategory] = useState("");
   const categories = [
     "Electronics",
@@ -71,11 +71,11 @@ export default function Home() {
                       <Range
                         marks={{
                           1: `$1`,
-                          1000000: `$1000000`,
+                          10000: `$10000`,
                         }}
                         min={1}
-                        max={1000000}
-                        defaultValue={[1, 1000000]}
+                        max={10000}
+                        defaultValue={[1,10000]}
                         tipFormatter={(value) => `$${value}`}
                         tipProps={{
                           placement: "top",
@@ -85,7 +85,6 @@ export default function Home() {
                         onChange={(price) => setPrice(price)}
                       />
                       <hr className="my-5" />
-
                       <div className="mt-5">
                         <h4 className="mb-3">Categories</h4>
                         <ul className="pl-0">
@@ -161,10 +160,10 @@ export default function Home() {
                 itemsCountPerPage={resPerPage}
                 totalItemsCount={productsCount}
                 onChange={setCurrentPageNumber}
-                nextPageText={"Next"}
-                prevPageText={"Prev"}
-                firstPageText={"First"}
-                lastPageText={"Last"}
+                nextPageText={">"}
+                prevPageText={"<"}
+                firstPageText={"<<"}
+                lastPageText={">>"}
                 itemClass="page-item"
                 linkClass="page-link"
               />

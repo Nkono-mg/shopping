@@ -2,6 +2,7 @@ import "./App.css";
 import Footer from "./components/layout/Footer";
 import Header from "./components/layout/Header";
 import Home from "./components/pages/Home";
+import PageNotFound from "./components/pages/PageNotFound";
 import ProductDetails from "./components/products/productDetails";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/users/Login";
@@ -96,9 +97,9 @@ import NewProduct from "./components/admin/products/NewProduct";
               }
             />
             <Route path="/cart" element={<Cart />} />
-          </Routes>
-        </div>
-        <Routes>
+          {/* </Routes> */}
+        {/* </div> */}
+        {/* <Routes> */}
           <Route
             path="/admin/dashboard"
             isAdmin={true}
@@ -126,7 +127,9 @@ import NewProduct from "./components/admin/products/NewProduct";
               </ProtectedRoute>
             }
           /> 
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
+        </div>
         {/* {!loading && user.role !=="admin" && (
           <Footer />
         ) } */}
