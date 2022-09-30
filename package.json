@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Ecommerce site shopping using mern stack",
   "main": "server.js",
+  "engines": {
+    "node": "16.14.2",
+    "npm": "8.5.0"
+  },
   "scripts": {
     "start": "nodemon server.js",
     "dev": "SET NODE_ENV=DEVELOPMENT & nodemon backend/server",
