@@ -1,5 +1,6 @@
 const app = require("./app");
 const dotenv = require("dotenv");
+const path = require("path"); 
 const cloudinary = require('cloudinary')
 const connectDB = require("./config/database");
 
@@ -21,10 +22,20 @@ connectDB();
     cloud_api_secret: process.env.CLOUDINARY_API_SECRET,
   });   */
 
-const server = app.listen(process.env.PORT, () => {
-    console.log(`Server started on port ${process.env.PORT} in ${process.env.NODE_ENV}mode`);
-});
-
+  //Heroku deployement
+  __dirname = path.resolve();
+  if(process.env.NODE_ENV ==="PRODUCTION"){
+    app.use(express.static(path.join(__dirname, "/frontend/build")));
+    app.get("*",(req,res)=>{
+      res.sendFile(
+        path.resolve(__dirname, "frontend","build","index.html"));
+    }) 
+  }else{
+    const server = app.listen(process.env.PORT, () => {
+        console.log(`Server started on port ${process.env.PORT} in ${process.env.NODE_ENV}mode`);
+    });
+  }
+ 
 //handle unhandle promise rejections error
 process.on('unhandledRejection', err =>{
     console.log(`Error: ${err.message}`);

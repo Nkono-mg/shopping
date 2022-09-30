@@ -6,7 +6,7 @@ const errorMiddleware = require("./middlewares/errors");
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const path = require("path"); 
+
 
 //Access API 
 dotenv.config({path: "backend/config/config.env"}); 
@@ -39,19 +39,6 @@ app.use("/shopping", payments);
 
 //Middleware to handle errors
 app.use(errorMiddleware);
-
-//Vercel config
-/* app.use(express.static(path.join(__dirname, "../frontend/build")));
-app.get("*", function(_,res){
-  res.sendFile(
-    path.join(__dirname, "../frontend/build/index.html"),
-    function(err){
-      if(err){
-        res.status(500).send(err)
-      }
-    }
-  )
-}) */
 
 //export app
 module.exports = app;
