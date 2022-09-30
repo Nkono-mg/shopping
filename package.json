@@ -8,7 +8,7 @@
     "npm": "8.5.0"
   },
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "server.js",
     "dev": "SET NODE_ENV=DEVELOPMENT & nodemon backend/server",
     "prod": "SET NODE_ENV=PRODUCTION & nodemon backend/server",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
