@@ -1,6 +1,7 @@
 import React, { useEffect, Fragment, useState } from "react";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
+import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader";
 import { Link } from "react-router-dom";
 import { userLogin, clearErrors } from "../../redux/users/userAction";
@@ -12,7 +13,7 @@ const Login = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuthenticatedUser, error, loading} = useSelector(
+  const { isAuthenticatedUser, error, loading } = useSelector(
     (state) => state.authUser
   );
   const location = useLocation();
@@ -26,7 +27,7 @@ const Login = () => {
       alert.error(error);
       dispatch(clearErrors());
     }
-  }, [dispatch, error, isAuthenticatedUser, alert,navigate, redirect]);
+  }, [dispatch, error, isAuthenticatedUser, alert, navigate, redirect]);
 
   const loginHandler = (e) => {
     e.preventDefault();
@@ -37,6 +38,7 @@ const Login = () => {
 
   return (
     <Fragment>
+      <MetaData title={`Please login to your account`} />
       {loading ? (
         <Loader />
       ) : (
@@ -55,7 +57,7 @@ const Login = () => {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
-                <div className="form-group"> 
+                <div className="form-group">
                   <label htmlFor="password_field">Password</label>
                   <input
                     type="password"
@@ -66,8 +68,8 @@ const Login = () => {
                   />
                 </div>
                 <Link to="/password/forgot" className="float-right mb-4">
-                  Forgot Password?
-                </Link>  
+                  Forgot Password ?
+                </Link>
                 <button
                   id="login_button"
                   type="submit"
@@ -76,7 +78,7 @@ const Login = () => {
                   LOGIN
                 </button>
                 <Link to="/user/register" className="float-right mt-3">
-                  New User?
+                  New User ?
                 </Link>
               </form>
             </div>

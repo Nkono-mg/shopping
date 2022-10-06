@@ -3,6 +3,8 @@ import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import { userRegister, clearErrors } from "../../redux/users/userAction";
 import { useNavigate } from "react-router-dom";
+import /* A component that is used to set the title of the page. */
+MetaData from "../layout/MetaData";
 
 const Register = () => {
   const [newUser, setNeWUser] = useState({
@@ -61,6 +63,7 @@ const Register = () => {
 
   return (
     <Fragment>
+      <MetaData title= {`Please create your account`} />
       <div className="row wrapper">
         <div className="col-10 col-lg-5">
           <form

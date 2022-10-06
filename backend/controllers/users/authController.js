@@ -5,19 +5,17 @@ const catchAsyncError = require("../../middlewares/catchAsyncError");
 const sendToken = require("../../utils/jwtToken");
 const sendEmail = require("../../utils/sendEmail");
 const crypto = require("crypto");
-const cloudinary  = require("../../utils/cloudinary");
+const cloudinary = require("cloudinary").v2;
 
 //Register a user
 module.exports.registerUser = catchAsyncError(async (req, res, next) => {
-  
-  //console.log(req.body.avatar)
   //set up avatar
     const result = await cloudinary.uploader.upload(req.body.avatar, {
     folder: "profiles", 
     with: 150,
     crop: "scale",
      upload_preset: "shopping_cloud",
-    allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp", "gif"] 
+    //allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp", "gif"] 
   })   
   const { name, email, password } = req.body;
   const user = await userModel.create({ 
@@ -55,13 +53,6 @@ module.exports.loginUser = catchAsyncError(async (req, res, next) => {
   if (!isPasswordMatched) {
     return next(new ErrorHandler("Invalid Password", 401));
   }
-  /*    const token = user.getJwtToken(); 
-    return res.status(200).json({
-        success: true,
-        token
-    }) */
-
-  //Replaced by sendToken function
   return await sendToken(user, 200, res);
 });
 
@@ -250,5 +241,5 @@ module.exports.deleteUser = catchAsyncError(async (req, res, next) => {
       success: true,
       message: `User is deleted`,
     });
-  }
+  } 
 });

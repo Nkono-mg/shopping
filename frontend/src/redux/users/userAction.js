@@ -33,7 +33,7 @@ export const userLogin = (email, password) => async (dispatch) => {
     if (email && password) {
       const { data } = await axios.post(link,{email,password }, config);
       dispatch({
-        type: LOGIN_SUCCESS,
+        type: LOGIN_SUCCESS, 
         payload: data.user,
       });
 

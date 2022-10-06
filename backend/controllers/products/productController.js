@@ -3,7 +3,6 @@ const ObjectId = require("mongoose").Types.ObjectId;
 const ErrorHandler = require("../../utils/errorHandler");
 const catchAsyncError = require("../../middlewares/catchAsyncError");
 const APIFeatures = require("../../utils/apiFeatures");
-const cloudinary = require("../../utils/cloudinary");
 
 //Create a new product
 exports.addProduct = catchAsyncError(async (req, res, next) => {

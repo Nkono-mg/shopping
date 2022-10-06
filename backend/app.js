@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const bodyPrser = require("body-parser");
+const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const errorMiddleware = require("./middlewares/errors");
 const fileUpload = require("express-fileupload");
@@ -21,8 +21,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json());
-app.use(bodyPrser.json());
-app.use(bodyPrser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(fileUpload());
 
