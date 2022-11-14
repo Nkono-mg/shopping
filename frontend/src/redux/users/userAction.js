@@ -27,7 +27,7 @@ export const userLogin = (email, password) => async (dispatch) => {
       headers: {
         "Content-Type": "application/json"
       },
-      withCredentials: true
+      withCredentials: true 
     };
     const link = `http://localhost:5000/api/shopping/login`;
     if (email && password) {
@@ -97,8 +97,15 @@ export const loadUser = () => async (dispatch) => {
 //Load user
 export const logoutUser = () => async (dispatch) => {
   try {
+
+     const config = {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      withCredentials: true 
+    };
     const link = `http://localhost:5000/api/shopping/logout`;
-    await axios.get(link);
+    await axios.get(link, config);
     dispatch({
       type: LOGOUT_USER_SUCCESS,
     });

@@ -27,13 +27,9 @@ module.exports.registerUser = catchAsyncError(async (req, res, next) => {
       url: result.secure_url,
     },    
   });
-  /* const token = user.getJwtToken();
-    return res.status(200).json({
-        success: true,
-        token
-    }) */
-
-  //Replaced by sendToken function
+  if(!user){
+    return next(new ErrorHandler("Error of inscription", 400))
+  }
   return await sendToken(user, 200, res);
 });
 
@@ -115,9 +111,9 @@ module.exports.resetPasswordUser = catchAsyncError(async (req, res, next) => {
 
 //logout user
 module.exports.logoutUser = catchAsyncError(async (req, res, next) => {
-  await res.cookie("jwt", "", {
-    expires: new Date(Date.now()),
-    httpOnly: true,
+  res.cookie("token", "", {
+    maxAge: 1,
+    //httpOnly: true,
   });
    return res.status(200).json({ 
     success: true,

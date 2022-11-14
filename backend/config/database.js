@@ -9,4 +9,4 @@ const connectDB = ()=>{
       console.log(`MongoDB connected on ${con.connection.host}`)
     })
 }
-module.exports = connectDB;
+module.exports = connectDB; 

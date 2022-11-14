@@ -12,7 +12,6 @@ const Register = () => {
     email: "",
     password: "",
   });
-
   const { name, email, password } = newUser;
   const [avatar, setAvatar] = useState("");
   const [avatarPreview, setAvatarPreview] = useState(

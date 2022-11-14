@@ -1,32 +1,28 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Search from "./Search";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { logoutUser } from "../../redux/users/userAction";
-import { useCookies } from "react-cookie";
+import { useCookies } from 'react-cookie';
 
 const Header = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const { user, loading } = useSelector((state) => state.authUser);
   const cartItems = useSelector((state)=>state.cartProduct.cartItems);
-  const navigate = useNavigate();
-  const cookies = useCookies();
-
+  //const navigate = useNavigate();
+  //const [cookies, setCookie, removeCookie] = useCookies("jwt");
   
-  const removeCookie = (keyCookie)=>{
-    if(window !=="undefined"){
-        cookies.remove(keyCookie,{expires: 1});
-    }
-} 
+
   const logoutHandler = (e)=>{
     e.preventDefault();
     dispatch(logoutUser());
-    removeCookie("jwt")
+    //removeCookie("jwt");
+    //localStorage.removeItem("token");
     alert.success("Logged out successfully !");
-    navigate("/")
   }
+
   return (
     <Fragment>
       <nav className="navbar row">
@@ -78,7 +74,7 @@ const Header = () => {
                 ) : (<Link className="dropdown-item" to="/admin/dashboard">Dashboard</Link>)
                 }
                 <Link className="dropdown-item" to="/me">Profile</Link>
-                <Link className="dropdown-item text-danger" to="#!" onClick={(e)=>logoutHandler(e)}>
+                <Link className="dropdown-item text-danger" to="/" onClick={(e)=>logoutHandler(e)}>
                   Logout
                 </Link>
               </div>
