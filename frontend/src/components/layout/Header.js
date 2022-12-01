@@ -9,17 +9,12 @@ import { useCookies } from 'react-cookie';
 const Header = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
-  const { user, loading } = useSelector((state) => state.authUser);
+  const { user, jwt_token, loading } = useSelector((state) => state.authUser);
   const cartItems = useSelector((state)=>state.cartProduct.cartItems);
-  //const navigate = useNavigate();
-  //const [cookies, setCookie, removeCookie] = useCookies("jwt");
-  
 
   const logoutHandler = (e)=>{
     e.preventDefault();
     dispatch(logoutUser());
-    //removeCookie("jwt");
-    //localStorage.removeItem("token");
     alert.success("Logged out successfully !");
   }
 
@@ -45,7 +40,7 @@ const Header = () => {
               {cartItems.length}
             </span>
           </Link>
-          {user ? (
+          {user && jwt_token ? (
             <div className="ml-4 dropdown d-inline">
               <Link
                 to="#!"

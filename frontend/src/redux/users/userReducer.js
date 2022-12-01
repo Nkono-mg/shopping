@@ -36,7 +36,8 @@ export const authReducer = (state = { user: {} }, action) => {
         ...state,
         loading: false,
         isAuthenticatedUser: true,
-        user: action.payload,
+        user: action.payload.user,
+        jwt_token: action.payload.token
       };
     case LOGOUT_USER_SUCCESS:
       return {
